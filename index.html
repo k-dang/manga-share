@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Manga Share</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
@@ -13,15 +13,15 @@
       <div class="controls box">
         <div class="inner-controls">
           <h2>url:</h2>
-          <input v-model="url" v-on:change="setUrl" autocomplete="off">
+          <textarea class="input is-small" v-model="url" v-on:change="setUrl" autocomplete="off"></textarea>
         </div>
         <div class="inner-controls">
           <h2>chapter:</h2>
-          <input v-model.number="chapter" v-on:change="setChapter" autocomplete="off">
+          <input class="input is-small" v-model.number="chapter" v-on:change="setChapter" autocomplete="off">
         </div>
         <div class="inner-controls">
           <h2>page:</h2>
-          <input v-model.number="page" v-on:change="setPage" autocomplete="off">
+          <input class="input is-small" v-model.number="page" v-on:change="setPage" autocomplete="off">
         </div>
         <div class="inner-controls">
           <button class="button" v-on:click="upChapter">Up chapter</button>
