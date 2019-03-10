@@ -1,0 +1,41 @@
+html {
+  overflow: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 13px Helvetica, Arial;
+}
+
+iframe{
+  width: 1080px; 
+  height: 1080px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.controls {
+  /* position: absolute;
+  right: 5px;
+  top: 150px; */
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  align-self: flex-start;
+}
+
+.inner-controls {
+  flex-direction: row;
+  padding-bottom: 5px;
+}

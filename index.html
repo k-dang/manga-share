@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    <div id="app" class="container">
+      <iframe id="mid" v-bind:src="source">
+        <p>Your browser does not support iframes.</p>
+      </iframe>
+      <div class="controls box">
+        <div class="inner-controls">
+          <h2>url:</h2>
+          <input v-model="url" v-on:change="setUrl" autocomplete="off">
+        </div>
+        <div class="inner-controls">
+          <h2>chapter:</h2>
+          <input v-model.number="chapter" v-on:change="setChapter" autocomplete="off">
+        </div>
+        <div class="inner-controls">
+          <h2>page:</h2>
+          <input v-model.number="page" v-on:change="setPage" autocomplete="off">
+        </div>
+        <div class="inner-controls">
+          <button class="button" v-on:click="upChapter">Up chapter</button>
+        </div>
+        <div class="inner-controls">
+          <button class="button" v-on:click="back">Back</button>
+          <button class="button is-primary" v-on:click="forward">Forward</button>
+        </div>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+      var socket = io();
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          chapter: 2,
+          page: 3,
+          url: 'https://www.mangareader.net/shokugeki-no-soma/'
+        },
+        computed: {
+          source: function() {
+            return this.url + this.chapter + '/' + this.page
+          }
+        },
+        methods: {
+          setUrl: function(event) {
+            socket.emit('url change', this.url);
+          },
+          setChapter: function(event) {
+            socket.emit('chapter change', this.chapter);
+          },
+          setPage: function(event) {
+            socket.emit('page change', this.page);
+          },
+          back: function(event) {
+            if (this.page > 1) {
+              this.page -= 1;
+              socket.emit('page update', this.page);
+            } else {
+              console.log('page can\'t be negative');
+              // try to update chapter
+              if (this.chapter > 1) {
+                this.chapter -= 1;
+                socket.emit('chapter update', this.chapter);
+              } else {
+                console.log('chapter can\'t be negative');
+              }
+            }
+          },
+          forward: function(event) {
+            this.page += 1;
+            socket.emit('page update', this.page);
+          },
+          upChapter: function(event) {
+            this.page = 1;
+            this.chapter += 1;
+            socket.emit('chapter update', this.chapter);
+          }
+        }
+      })
+
+      socket.on('url change', function(msg) {
+        app.url = msg;
+      });
+
+      socket.on('chapter change', function(msg) {
+        app.chapter = msg;
+      });
+
+      socket.on('page change', function(msg) {
+        app.page = msg;
+      });
+
+      socket.on('page update', function(msg) {
+        app.page = msg;
+      });
+
+      socket.on('chapter update', function(msg){
+        app.page = 1;
+        app.chapter = msg;
+      });
+    </script>
+  </body>
+</html>
